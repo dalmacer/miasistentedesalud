@@ -739,6 +739,13 @@ async function sendMessage(){
       })
     });
     const data = await response.json();
+
+    if(!response.ok){
+      const errMsg = (data && data.error && (data.error.message || data.error)) || 'Error desconocido';
+      thinking.remove();
+      addBubble('⚠️ ' + errMsg, 'bot');
+      return;
+    }
     const textBlocks = (data.content||[]).filter(c=>c.type==='text').map(c=>c.text);
     const rawText = textBlocks.join('\n').trim();
 
